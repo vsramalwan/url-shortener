@@ -1,11 +1,20 @@
-import dotenv from "dotenv";
 import express from "express";
 import { AddressInfo } from "net";
+// import path from "path";
 
-dotenv.config();
+// const dotenvConfiguration = dotenv.config({
+//   path: path.resolve(__dirname, "./../.local.env"),
+//   debug: true,
+// });
+
+// if (dotenvConfiguration.error) {
+//   throw dotenvConfiguration.error;
+// }
+
+// console.log(dotenvConfiguration.parsed);
+
 var app = express();
-
-const portNumber = process.env["PORT"];
+const portNumber = process.env.PORT;
 
 app.get("/", (_req, res) => {
   res.send("working...");
@@ -20,7 +29,7 @@ app.post("/url", (_req, res) => {
 var server = app.listen(portNumber, () => {
   const serverAddress = server?.address() as AddressInfo; //TODO: resolve this
   var host = serverAddress.address || "localhost";
-  var port = serverAddress.port || "8081";
+  var port = portNumber || 8081;
 
   console.log("Listening at http://%s:%s", host, port);
 });
