@@ -18,7 +18,7 @@ app.post("/url", (_req, res) => {
 });
 
 var server = app.listen(portNumber, () => {
-  const serverAddress = server?.address() as AddressInfo;
+  const serverAddress = server?.address() as AddressInfo; //TODO: resolve this
   var host = serverAddress.address || "localhost";
   var port = serverAddress.port || "8081";
 
