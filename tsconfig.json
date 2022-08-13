@@ -1,0 +1,8 @@
+{
+    "extends": "./node_modules/typescript-eslint-prettier-config/tsconfig.json",
+    "compilerOptions": {
+        "noPropertyAccessFromIndexSignature": false,
+    },
+    "exclude": ["**/node_modules/**", "build/**", "dist/**"],
+    "include": ["src/*.ts"] // include your src folder or use default
+}
