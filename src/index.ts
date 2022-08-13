@@ -1,19 +1,26 @@
-var express = require("express");
+import dotenv from "dotenv";
+import express from "express";
+import { AddressInfo } from "net";
+
+dotenv.config();
 var app = express();
 
-app.get("/", (req, res) => {
+const portNumber = process.env["PORT"];
+
+app.get("/", (_req, res) => {
   res.send("working...");
 });
 
-app.post("/url", (req, res) => {
-  console.log(req.long_url);
-  console.log(res.short_url);
+app.post("/url", (_req, res) => {
+  //   console.log(req.);
+  //   console.log(res.short_url);
   res.json();
 });
 
-var server = app.listen(8081, () => {
-  var host = server.address().address;
-  var port = server.address().port;
+var server = app.listen(portNumber, () => {
+  const serverAddress = server?.address() as AddressInfo;
+  var host = serverAddress.address || "localhost";
+  var port = serverAddress.port || "8081";
 
   console.log("Listening at http://%s:%s", host, port);
 });
