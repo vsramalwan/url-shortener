@@ -34,7 +34,6 @@ export const sequelize = new Sequelize(
 sequelize
   .authenticate()
   .then(() => {
-    // db.sequelize.sync();
     console.log("Connection established successfully.");
   })
   .catch((err: any) => {
@@ -43,3 +42,5 @@ sequelize
   .finally(() => {
     sequelize.close();
   });
+
+sequelize.sync();
