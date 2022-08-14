@@ -1,17 +1,5 @@
 import express from "express";
 import { AddressInfo } from "net";
-// import path from "path";
-
-// const dotenvConfiguration = dotenv.config({
-//   path: path.resolve(__dirname, "./../.local.env"),
-//   debug: true,
-// });
-
-// if (dotenvConfiguration.error) {
-//   throw dotenvConfiguration.error;
-// }
-
-// console.log(dotenvConfiguration.parsed);
 
 var app = express();
 const portNumber = process.env.PORT;

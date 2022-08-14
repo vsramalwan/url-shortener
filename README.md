@@ -1,5 +1,5 @@
 Steps to run the app:
-1. Copy the [env file](./.env) into a new file named `.env.local` with necessary credentials
+1. Copy the [env file](./.env) into a new file `.local.env` with necessary credentials
 2. `yarn start` to start the app
 3. `yarn test` to run tests
 
