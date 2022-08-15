@@ -128,7 +128,3 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-
-
-# sequelize config
-src/config/config.json
