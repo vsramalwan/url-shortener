@@ -4,5 +4,5 @@
         "noPropertyAccessFromIndexSignature": false,
     },
     "exclude": ["**/node_modules/**", "build/**", "dist/**"],
-    "include": ["src/*.ts"] // include your src folder or use default
+    "include": ["src/*.ts", "src/**/*.test.ts"] // include your src folder or use default
 }
