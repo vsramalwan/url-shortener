@@ -14,6 +14,7 @@ console.log(dotenvConfiguration.parsed);
 
 import { AddressInfo } from "net";
 import { INITIAL_VISIT_COUNT } from "./constants";
+import { generateUniqueShortLink } from "./generateUniqueShortLink";
 // @ts-expect-error any type sequelize-cli
 import { sequelize, Stats, Url } from "./models";
 
@@ -38,9 +39,11 @@ app.post("/url", async (req, res) => {
       },
       include: [{ model: Stats, as: "stats" }],
     });
-    if (url === null) {
-      const generateShortUrl =
-        process.env.BASE_URL_PATH + Math.random().toString(36).slice(2, 10);
+    if (!url) {
+      const generateShortUrl = generateUniqueShortLink(
+        process.env.BASE_URL_PATH || "",
+        longUrl
+      );
       console.log("generateShortUrl", generateShortUrl);
 
       const newUrl = await Url.create({
