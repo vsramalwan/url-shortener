@@ -13,98 +13,17 @@ if (dotenvConfiguration.error) {
 console.log(dotenvConfiguration.parsed);
 
 import { AddressInfo } from "net";
-import { INITIAL_VISIT_COUNT } from "./constants";
-import { generateUniqueShortLink } from "./generateUniqueShortLink";
 // @ts-expect-error any type sequelize-cli
-import { sequelize, Stats, Url } from "./models";
+import { sequelize } from "./models";
 
 import express from "express";
 var app = express();
+
+const routes = require("./routes");
 app.use(express.json());
+app.use("/", routes);
 
-const portNumber = process.env["PORT"];
-
-app.get("/", (_req, res) => {
-  res.send("working...");
-});
-
-app.post("/url", async (req, res) => {
-  const { longUrl } = await req.body;
-
-  try {
-    // Check if longUrl already exists
-    const url = await Url.findOne({
-      where: {
-        longUrl,
-      },
-      include: [{ model: Stats, as: "stats" }],
-    });
-    if (!url) {
-      const generateShortUrl = generateUniqueShortLink(
-        process.env.BASE_URL_PATH || "",
-        longUrl
-      );
-      console.log("generateShortUrl", generateShortUrl);
-
-      const newUrl = await Url.create({
-        longUrl: longUrl,
-        shortUrl: generateShortUrl,
-      });
-      await Stats.create({
-        shortUrl: generateShortUrl,
-        visits: INITIAL_VISIT_COUNT,
-        urlId: newUrl.id,
-      });
-
-      return res.status(201).json(newUrl);
-    }
-    return res.status(200).json(url);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json(error);
-  }
-});
-
-app.get("/url/:shortUrl", async (req, res) => {
-  const shortUrl = req.params.shortUrl;
-  try {
-    const url = await Url.findOne({
-      where: { shortUrl },
-      include: [{ model: Stats, as: "stats" }],
-    });
-
-    const currentStat = await Stats.findOne({
-      where: { shortUrl },
-    });
-    console.info(`current visit count: ${currentStat.visits}`);
-    const updatedVisitCount = currentStat.visits + 1;
-
-    const updatedStats = await Stats.update(
-      { visits: updatedVisitCount },
-      { where: { shortUrl: shortUrl } }
-    );
-    console.info(`updated visit count: ${updatedStats.visits}`);
-
-    return res.status(200).json(url);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json(error);
-  }
-});
-
-app.get("/stats/:shortUrl", async (req, res) => {
-  const shortUrl = req.params.shortUrl;
-  try {
-    const url = await Stats.findAll({
-      where: { shortUrl },
-      include: [{ model: Url, as: "url" }],
-    });
-    return res.status(200).json(url);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json(error);
-  }
-});
+const portNumber = process.env.PORT;
 
 var server = app.listen(portNumber, async () => {
   const serverAddress = server?.address() as AddressInfo;
