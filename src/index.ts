@@ -48,18 +48,17 @@ app.post("/url", async (req, res) => {
 
       const newUrl = await Url.create({
         longUrl: longUrl,
-        shortUrl: generateShortUrl, // TODO: url shortening magic!
+        shortUrl: generateShortUrl,
       });
-      // TODO: push the short url with visit 0 in stats
       await Stats.create({
         shortUrl: generateShortUrl,
         visits: INITIAL_VISIT_COUNT,
         urlId: newUrl.id,
       });
 
-      return res.json(newUrl);
+      return res.status(201).json(newUrl);
     }
-    return res.json(url);
+    return res.status(200).json(url);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
@@ -86,7 +85,7 @@ app.get("/url/:shortUrl", async (req, res) => {
     );
     console.info(`updated visit count: ${updatedStats.visits}`);
 
-    return res.json(url);
+    return res.status(200).json(url);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
@@ -100,7 +99,7 @@ app.get("/stats/:shortUrl", async (req, res) => {
       where: { shortUrl },
       include: [{ model: Url, as: "url" }],
     });
-    return res.json(url);
+    return res.status(200).json(url);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
