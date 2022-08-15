@@ -1,5 +1,5 @@
 import { INITIAL_VISIT_COUNT } from "../constants";
-import { generateUniqueShortLink } from "../generateUniqueShortLink";
+import { generateUniqueShortLink } from "./../utils/generateUniqueShortLink";
 
 // @ts-expect-error any type sequelize-cli
 import { Stats, Url } from "./../models";
