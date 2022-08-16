@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  mysqldb:
+    image: mysql
+    restart: unless-stopped
+    env_file: ./.local.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQL_DATABASE
+    ports:
+      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_LOCAL_PORT
+    volumes:
+      - db:/var/lib/mysql
+  app:
+    depends_on:
+      - mysqldb
+    build: .
+    restart: unless-stopped
+    env_file: ./.local.env
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_LOCAL_PORT
+    environment:
+      - BASE_PATH=BASE_PATH
+      - PORT=PORT
+      - DB_SCHEMA=DB_SCHEMA
+      - DB_USER=DB_USER
+      - DB_PASSWORD=DB_PASSWORD
+      - DB_HOST=DB_HOST
+      - DB_PORT=DB_PORT
+      - BASE_URL_PATH=BASE_URL_PATH
+      - BASE_URL_PATH_REGEX=BASE_URL_PATH_REGEX
+    stdin_open: true
+    tty: true
+volumes: 
+  db:
